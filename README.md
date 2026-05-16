@@ -1,51 +1,59 @@
-# VodsTrade V9 - Système de Trading IA Complet
+# VodsTrade V9 - Système de Trading IA Autonome 🚀
 
-VodsTrade est un bot d'arbitrage de financement crypto professionnel, alimenté par l'IA, utilisant une architecture multi-agents CrewAI. Ce système intègre des modèles de langage (LLM) avancés, des prédictions de machine learning et une infrastructure robuste pour le trading automatisé.
+VodsTrade est une plateforme de trading de cryptomonnaies ultra-puissante et entièrement autonome. Elle utilise une architecture de **500 agents IA** (via CrewAI) collaborant en temps réel pour analyser, prédire et exécuter des stratégies de trading complexes.
+
+## 🌟 Fonctionnalités Principales
+
+- **Intelligence Collective** : 10 équipes (crews) spécialisées gérant 500 agents pour une analyse à 360° du marché.
+- **Multi-LLM natif** : Routage intelligent entre OpenAI (GPT-4), Anthropic (Claude), Grok, Gemini, DeepSeek et NVIDIA.
+- **Machine Learning Avancé** : Modèles LSTM, Transformer et Ensemble pour des prédictions de prix et de volatilité de haute précision.
+- **Gestion des Risques Institutionnelle** : Calcul de VaR, CVaR, Stress Testing et Circuit Breaker automatique.
+- **Dashboard Temps Réel** : Interface Streamlit élégante avec graphiques Plotly pour suivre vos performances et l'activité des agents.
+- **Infrastructure GPU Ready** : Optimisé pour l'accélération matérielle via Docker et NVIDIA CUDA.
 
 ## 📦 Structure du Projet
 
-Le projet est organisé de la manière suivante :
+| Dossier | Description |
+| :--- | :--- |
+| `core/` | Moteur de trading, gestion des exchanges et logique centrale. |
+| `agents/` | Orchestration des 500 agents CrewAI et outils personnalisés. |
+| `ml/` | Modèles prédictifs et logique d'apprentissage par renforcement. |
+| `llm/` | Gestionnaires et routeurs pour les différents fournisseurs d'IA. |
+| `strategies/` | Stratégies d'arbitrage, momentum, market making et retour à la moyenne. |
+| `dashboard/` | Interface utilisateur web (Streamlit). |
+| `infra/` | Configuration Docker, Nginx et déploiement. |
+| `research/` | Outils de collecte de données (Web, Social, On-chain, News). |
 
-- **`core/`** : Le moteur principal de trading, la gestion des exchanges et du risque.
-- **`agents/`** : Orchestration des agents CrewAI et outils personnalisés.
-- **`ml/`** : Modèles de machine learning pour les prédictions de prix, de financement et de volatilité.
-- **`llm/`** : Gestion et routage vers divers fournisseurs de LLM (OpenAI, Anthropic, etc.).
-- **`research/`** : Collecteurs de données web, sociales et on-chain.
-- **`strategies/`** : Implémentations des stratégies de trading (Arbitrage, Momentum, etc.).
-- **`dashboard/`** : Interface utilisateur basée sur Streamlit pour le suivi en temps réel.
-- **`infra/`** : Configuration Docker et Nginx pour le déploiement.
-- **`scripts/`** : Scripts utilitaires pour le déploiement et l'entraînement des modèles.
-- **`config/`** : Paramètres de l'application et gestion des variables d'environnement.
+## 🚀 Démarrage Rapide
 
-## 🚀 Installation et Démarrage
+### 1. Prérequis
+- Docker et Docker Compose installés.
+- Accès à un GPU NVIDIA (optionnel mais recommandé pour le ML).
 
-### Prérequis
-
-- Docker et Docker Compose
-- Python 3.9+
-- Clés API pour les exchanges et les fournisseurs de LLM
-
-### Configuration
-
-1.  Copiez le fichier `.env.example` vers `.env` dans le dossier `config/`.
-2.  Remplissez vos clés API et configurez vos préférences.
-
-### Lancement avec Docker
-
+### 2. Installation
 ```bash
-./scripts/deploy.sh
+git clone https://github.com/Maxthiba24/VodsTrade.git
+cd VodsTrade
+chmod +x start.sh
 ```
 
-Cela démarrera le moteur de trading, le tableau de bord Streamlit et un serveur Redis.
+### 3. Configuration
+Éditez le fichier `.env` (créé automatiquement au premier lancement ou à partir de `config/.env.example`) pour ajouter vos clés API :
+- Exchanges (Binance, Bybit, OKX)
+- LLM (OpenAI, Anthropic, etc.)
 
-## 🛠️ Fonctionnalités Clés
+### 4. Lancement
+```bash
+./start.sh
+```
 
-- **Multi-Agents CrewAI** : Plus de 10 agents spécialisés (recherche, sentiment, technique, etc.) collaborent pour analyser le marché.
-- **Intégration LLM** : Utilisation de GPT-4, Claude, Grok et d'autres pour la consolidation des signaux et l'analyse de texte.
-- **Machine Learning** : Prédictions basées sur des modèles Random Forest, Gradient Boosting et Apprentissage par Renforcement.
-- **Arbitrage de Financement** : Stratégie optimisée pour capturer les écarts de taux de financement entre les exchanges.
-- **Tableau de Bord Temps Réel** : Suivi des positions, des performances et des logs via une interface web intuitive.
+## 📊 Monitoring
+- **Dashboard** : [http://localhost:8501](http://localhost:8501)
+- **API Docs** : [http://localhost:8000/docs](http://localhost:8000/docs)
+- **Automation (n8n)** : [http://localhost:5678](http://localhost:5678)
 
-## ⚖️ Avertissement de Risque
+## ⚠️ Avertissement Légal
+Le trading de cryptomonnaies comporte des risques substantiels. **VodsTrade** est un outil technologique fourni "tel quel". Commencez toujours en mode **PAPER_TRADING=true** pour tester vos stratégies sans risque financier.
 
-Le trading de cryptomonnaies comporte des risques élevés. VodsTrade est fourni à titre éducatif et technologique. Utilisez-le avec prudence et ne misez que ce que vous pouvez vous permettre de perdre.
+---
+Développé avec ❤️ pour la communauté des traders algorithmiques.

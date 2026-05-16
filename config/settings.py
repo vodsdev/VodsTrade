@@ -1,151 +1,97 @@
+"""
+Configuration centrale du projet VodsTrade
+"""
+
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class Settings:
-    PROJECT_NAME: str = "VodsTrade"
-    PROJECT_VERSION: str = "9.0.0"
+    """Configuration globale"""
+    
+    # Application
+    APP_NAME = "VodsTrade V9"
+    VERSION = "9.0.0"
+    DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+    
+    # Trading
+    PAPER_TRADING = os.getenv("PAPER_TRADING", "True").lower() == "true"
+    TRADING_INTERVAL = int(os.getenv("TRADING_INTERVAL", "10"))  # secondes
+    SYMBOLS = os.getenv("SYMBOLS", "BTC/USDT,ETH/USDT,SOL/USDT,AVAX/USDT").split(",")
+    
+    # Risque
+    MAX_POSITION_SIZE = float(os.getenv("MAX_POSITION_SIZE", "1000"))
+    MAX_DAILY_LOSS = float(os.getenv("MAX_DAILY_LOSS", "500"))
+    MAX_LEVERAGE = int(os.getenv("MAX_LEVERAGE", "3"))
+    
+    # Fournisseurs LLM
+    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+    ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
+    GROK_API_KEY = os.getenv("GROK_API_KEY")
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+    DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
+    NVIDIA_API_KEY = os.getenv("NVIDIA_API_KEY")
+    
+    # Exchanges
+    BINANCE_API_KEY = os.getenv("BINANCE_API_KEY")
+    BINANCE_API_SECRET = os.getenv("BINANCE_API_SECRET")
+    BYBIT_API_KEY = os.getenv("BYBIT_API_KEY")
+    BYBIT_API_SECRET = os.getenv("BYBIT_API_SECRET")
+    
+    # Base de données
+    DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:pass@localhost:5432/trading")
+    REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
+    
+    # Agents
+    AGENT_COUNT = int(os.getenv("AGENT_COUNT", "500"))
+    MARKET_RESEARCH_AGENTS = int(os.getenv("MARKET_RESEARCH_AGENTS", "50"))
+    SENTIMENT_AGENTS = int(os.getenv("SENTIMENT_AGENTS", "100"))
+    TECHNICAL_AGENTS = int(os.getenv("TECHNICAL_AGENTS", "50"))
+    FUNDAMENTAL_AGENTS = int(os.getenv("FUNDAMENTAL_AGENTS", "40"))
+    ONCHAIN_AGENTS = int(os.getenv("ONCHAIN_AGENTS", "40"))
+    NEWS_AGENTS = int(os.getenv("NEWS_AGENTS", "50"))
+    SOCIAL_AGENTS = int(os.getenv("SOCIAL_AGENTS", "100"))
+    RISK_AGENTS = int(os.getenv("RISK_AGENTS", "30"))
+    STRATEGY_AGENTS = int(os.getenv("STRATEGY_AGENTS", "40"))
+    EXECUTION_AGENTS = int(os.getenv("EXECUTION_AGENTS", "50"))
+    
+    # Modèles ML
+    USE_GPU = os.getenv("USE_GPU", "True").lower() == "true"
+    LSTM_HIDDEN_SIZE = int(os.getenv("LSTM_HIDDEN_SIZE", "128"))
+    TRANSFORMER_LAYERS = int(os.getenv("TRANSFORMER_LAYERS", "3"))
 
-    # Configuration des exchanges
-    EXCHANGES_CONFIG: dict = {
-        "enabled": ["binance", "bybit"], # Activer les exchanges nécessaires
-        "credentials": {
-            "binance": {
-                "api_key": os.getenv("BINANCE_API_KEY"),
-                "api_secret": os.getenv("BINANCE_API_SECRET"),
-            },
-            "bybit": {
-                "api_key": os.getenv("BYBIT_API_KEY"),
-                "api_secret": os.getenv("BYBIT_API_SECRET"),
-            },
-        },
-        "testnet": os.getenv("USE_TESTNET", "True").lower() == "true",
-    }
-
-    # Configuration des agents
-    AGENTS_CONFIG: dict = {
-        "market_research": {"enabled": True},
-        "sentiment_analysis": {"enabled": True},
-        "technical_analysis": {"enabled": True},
-        "fundamental_analysis": {"enabled": True},
-        "onchain_analysis": {"enabled": True},
-        "news_aggregator": {"enabled": True},
-        "social_media": {"enabled": True},
-        "risk_assessment": {"enabled": True},
-        "strategy_optimizer": {"enabled": True},
-        "execution": {"enabled": True},
-    }
-
-    # Configuration des LLM
-    LLM_CONFIG: dict = {
-        "default_model": "openai", # Modèle par défaut pour le routage
-        "openai": {
-            "enabled": True,
-            "api_key": os.getenv("OPENAI_API_KEY"),
-            "model": "gpt-4o-mini",
-        },
-        "anthropic": {
-            "enabled": False,
-            "api_key": os.getenv("ANTHROPIC_API_KEY"),
-            "model": "claude-3-opus-20240229",
-        },
-        "gemini": {
-            "enabled": False,
-            "api_key": os.getenv("GEMINI_API_KEY"),
-            "model": "gemini-pro",
-        },
-        "grok": {
-            "enabled": False,
-            "api_key": os.getenv("GROK_API_KEY"),
-            "model": "grok-1",
-        },
-        "deepseek": {
-            "enabled": False,
-            "api_key": os.getenv("DEEPSEEK_API_KEY"),
-            "model": "deepseek-chat",
-        },
-        "nvidia": {
-            "enabled": False,
-            "api_key": os.getenv("NVIDIA_API_KEY"),
-            "model": "nvidia-nemotron-4-340b-instruct",
-        },
-        "consolidation_model": "openai", # Modèle spécifique pour la consolidation des signaux
-        "sentiment_model": "openai", # Modèle spécifique pour l'analyse de sentiment
-    }
-
-    # Configuration des stratégies
-    STRATEGIES_CONFIG: dict = {
-        "funding_arbitrage": {
-            "enabled": True,
-            "min_spread": 0.0005,
-            "max_position_size": 0.1,
-        },
-        "pairs_trading": {"enabled": False, "threshold": 2.0},
-        "market_making": {"enabled": False, "spread_tolerance": 0.001, "order_size": 0.001},
-        "momentum": {"enabled": False, "momentum_period": 14, "entry_threshold": 0.02, "exit_threshold": -0.01},
-        "mean_reversion": {"enabled": False, "window": 20, "std_dev_multiplier": 2.0},
-    }
-
-    # Configuration de la gestion des risques
-    RISK_CONFIG: dict = {
-        "max_exposure": 0.1, # 10% du capital
-        "max_loss_per_trade": 0.01, # 1% du capital
-        "max_daily_loss": 0.05, # 5% du capital
-    }
-
-    # Configuration de l'ingestion de données
-    DATA_INGESTION_CONFIG: dict = {
-        "symbols": ["BTC/USDT", "ETH/USDT"], # Symboles à surveiller
-        "timeframes": ["1m", "5m", "1h", "1d"], # Intervalles de temps pour les données historiques
-    }
-
-    # Intervalle de trading (en secondes)
-    TRADING_INTERVAL: int = 60 # Exécute la boucle principale toutes les 60 secondes
-
-    # Chemins des modèles ML
-    ML_MODELS_PATH: str = "./ml/models/"
-
-    # Configuration du logging
-    LOGGING_CONFIG: dict = {
-        "version": 1,
-        "disable_existing_loggers": False,
-        "formatters": {
-            "standard": {
-                "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-            },
-        },
-        "handlers": {
-            "console": {
-                "class": "logging.StreamHandler",
-                "formatter": "standard",
-            },
-            "file": {
-                "class": "logging.handlers.RotatingFileHandler",
-                "formatter": "standard",
-                "filename": "vodstrade.log",
-                "maxBytes": 10485760, # 10 MB
-                "backupCount": 5,
-            },
-        },
-        "loggers": {
-            "": {
-                "handlers": ["console", "file"],
-                "level": "INFO",
-                "propagate": False,
-            },
-        },
-    }
-
+settings = Settings()
 
 def load_config():
+    """Retourne la configuration sous forme de dictionnaire pour compatibilité"""
     return {
-        "project_name": Settings.PROJECT_NAME,
-        "project_version": Settings.PROJECT_VERSION,
-        "exchanges": Settings.EXCHANGES_CONFIG,
-        "agents": Settings.AGENTS_CONFIG,
-        "llm": Settings.LLM_CONFIG,
-        "strategies": Settings.STRATEGIES_CONFIG,
-        "risk": Settings.RISK_CONFIG,
-        "data": Settings.DATA_INGESTION_CONFIG,
+        "project_name": Settings.APP_NAME,
+        "version": Settings.VERSION,
+        "paper_trading": Settings.PAPER_TRADING,
         "trading_interval": Settings.TRADING_INTERVAL,
-        "ml_models_path": Settings.ML_MODELS_PATH,
-        "logging": Settings.LOGGING_CONFIG,
+        "symbols": Settings.SYMBOLS,
+        "risk": {
+            "max_position_size": Settings.MAX_POSITION_SIZE,
+            "max_daily_loss": Settings.MAX_DAILY_LOSS,
+            "max_leverage": Settings.MAX_LEVERAGE
+        },
+        "agents": {
+            "total_count": Settings.AGENT_COUNT,
+            "market_research": Settings.MARKET_RESEARCH_AGENTS,
+            "sentiment": Settings.SENTIMENT_AGENTS,
+            "technical": Settings.TECHNICAL_AGENTS,
+            "fundamental": Settings.FUNDAMENTAL_AGENTS,
+            "onchain": Settings.ONCHAIN_AGENTS,
+            "news": Settings.NEWS_AGENTS,
+            "social": Settings.SOCIAL_AGENTS,
+            "risk": Settings.RISK_AGENTS,
+            "strategy": Settings.STRATEGY_AGENTS,
+            "execution": Settings.EXECUTION_AGENTS
+        },
+        "ml": {
+            "use_gpu": Settings.USE_GPU,
+            "lstm_hidden_size": Settings.LSTM_HIDDEN_SIZE,
+            "transformer_layers": Settings.TRANSFORMER_LAYERS
+        }
     }
