@@ -29,14 +29,27 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
+from core.security import SecurityManager
+
 class TradingDashboard:
     def __init__(self):
         if 'portfolio_value' not in st.session_state:
             st.session_state.portfolio_value = 25000.0
         if 'update_count' not in st.session_state:
             st.session_state.update_count = 0
+        if 'api_key' not in st.session_state:
+            st.session_state.api_key = os.getenv("VODSTRADE_API_KEY", "")
             
     def render(self):
+        # --- VÉRIFICATION DE LICENCE ---
+        if not SecurityManager.validate_license(st.session_state.api_key):
+            st.error("❌ LICENCE INVALIDE OU EXPIREE")
+            st.info("Veuillez entrer une clé API VodsTrade valide pour accéder au tableau de bord.")
+            st.session_state.api_key = st.text_input("Clé API VodsTrade", value=st.session_state.api_key, type="password")
+            if st.button("Valider la Licence"):
+                st.rerun()
+            return
+
         self._render_sidebar()
         
         # En-tête
