@@ -1,2 +1,2 @@
-# quantum-pro-trading
-Quantum Pro Trading - Professional AI-Powered Crypto Funding Arbitrage Bot with CrewAI Multi-Agents
+# VodsTrade
+VodsTrade - Bot d'arbitrage de financement crypto professionnel basé sur l'IA avec des multi-agents CrewAI
