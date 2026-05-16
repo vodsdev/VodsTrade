@@ -1,0 +1,13 @@
+crewai
+crewai-tools
+requests
+beautifulsoup4
+pandas
+scikit-learn
+joblib
+ta
+streamlit
+asyncio
+python-dotenv
+ccxt
+loguru

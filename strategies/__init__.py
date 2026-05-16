@@ -1,0 +1,3 @@
+"""
+Module Strategies pour VodsTrade.
+"""
